@@ -30,7 +30,8 @@ myip=$(dig TXT +short o-o.myaddr.l.google.com @ns1.google.com | awk -F'"' '{ pri
 sed -i "s/123.234.345.456/$myip/g" /etc/rtpengine/rtpengine.conf
 sed -i "s/10.10.100.19/$myip/g" /etc/kamailio/kamailio.cfg
 
-cat <<EOF>> ### recording mixing/compressing/ftping scripts
+cat <<EOF>> /var/spool/cron/root
+### recording mixing/compressing/ftping scripts
 0,3,6,9,12,15,18,21,24,27,30,33,36,39,42,45,48,51,54,57 * * * * /usr/share/astguiclient/AST_CRON_audio_1_move_mix.pl
 #0,3,6,9,12,15,18,21,24,27,30,33,36,39,42,45,48,51,54,57 * * * * /usr/share/astguiclient/AST_CRON_audio_1_move_mix.pl --MIX
 #0,3,6,9,12,15,18,21,24,27,30,33,36,39,42,45,48,51,54,57 * * * * /usr/share/astguiclient/AST_CRON_audio_1_move_VDonly.pl
