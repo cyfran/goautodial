@@ -1,49 +1,31 @@
 #!/bin/bash
 mkdir -p /usr/share/info/ /etc/alternatives/
-wget -O /etc/yum.repos.d/goautodial.repo "http://downloads2.goautodial.org/centos/7/goautodial.repo"
+yum update -y
+yum install -y nano wget bind-utils
+yum groupinstall -y "Development Tools" 
+wget -O /etc/yum.repos.d/goautodial.repo http://downloads2.goautodial.org/centos/7/goautodial.repo
+yum -y install MariaDB-server MariaDB-devel php70w-mysql php70w-mcrypt php70w-devel php70w-mbstring php70w-common php70w-xml php70w-pear php70w-cli php70w-imap php70w-fpm php70w-gd php70w-opcache php70w-pdo php70w-process php70w php70w-intl php70w-pear.noarch php70w-xmlrpc asterisk-mysql-13.17.2-vici.el7.centos.x86_64 asterisk-perl-0.08-2.go.x86_64 asterisk-voicemail-plain-13.17.2-vici.el7.centos.x86_64 asterisk-devel-13.17.2-vici.el7.centos.x86_64 asterisk-voicemail-13.17.2-vici.el7.centos.x86_64 asterisk-alsa-13.17.2-vici.el7.centos.x86_64 asterisk-sip-13.17.2-vici.el7.centos.x86_64 asterisk-13.17.2-vici.el7.centos.x86_64 asterisk-dahdi-13.17.2-vici.el7.centos.x86_64 asterisk-iax2-13.17.2-vici.el7.centos.x86_64 asterisk-mp3-13.17.2-vici.el7.centos.x86_64 kamailio-tls kamailio kamailio-mysql kamailio-ims kamailio-utils kamailio-websocket  kamailio-json perl-Math-Round perl-Net-Server perl-File-Touch perl-Sys-RunAlone perl-Switch perl-Time-Local ngcp-rtpengine ngcp-rtpengine-kernel ngcp-rtpengine-dkms dkms dahdi-linux dahdi-linux-devel kernel-devel perl-Crypt-Eksblowfish perl-DBI perl-DBD-mysql perl-Net-Telnet lame httpd mod_ssl screen crontabs mailx net-tools glibc.i686
 yum install -y epel-release
-yum update -y 
-yum -y groupinstall "Development Tools" 
+yum install perl-Crypt-Eksblowfish perl-Sys-RunAlone
+echo "exclude=dahdi-tools*" >> /etc/yum.conf
+yum update
+systemctl enable php-fpm 
+systemctl enable httpd
+systemctl enable mariadb
+systemctl enable kamailio
+systemctl enable ngcp-rtpengine
+systemctl stop firewalld
+systemctl disable firewalld
+mkdir /var/run/kamailio
+chown kamailio /var/run/kamailio
+yum -y install goautodial-ce
+cd /usr/src/goautodial
+./install.sh
+yum install -y cpan perl-Digest-MD5
+cpan install Net::Server <<<yes
+cpan install Test::More <<<yes
+cpan install Asterisk::AGI <<<yes
 
-yum install -y httpd php-common php-pdo php php-pear php-mbstring php-cli php-gd php-imap php-devel \
-phpsysinfo php-mysql phpmyadmin mod_ssl mariadb mariadb-server mariadb-devel perl-DBI perl-DBD-MySQL \
-perl-Digest-HMAC perl-YAML perl-ExtUtils-ParseXS perl-NetAddr-IP perl-Crypt-SSLeay perl-Curses \
-perl-DBD-Pg perl-Module-ScanDeps perl-Text-CSV perl-HTML-Template perl-IO-Compress perl-Text-Glob \
-perl-Jcode perl-Test-Script perl-Archive-Tar perl-Test-Base perl-OLE-Storage_Lite perl-Archive-Zip \
-perl-Net-Server perl-Convert-ASN1 perl perl-Compress-Raw-Zlib perl-Digest-SHA1 perl-Data-Dumper \
-perl-Error perl-ExtUtils-CBuilder perl-Test-Tester perl-Parse-RecDescent perl-Spiffy perl-IO-Zlib \
-perl-Module-Build perl-HTML-Parser perl-Net-SSLeay perl-Proc-ProcessTable perl-TermReadKey \
-perl-Term-ReadLine-Gnu perl-Digest-SHA perl-Tk perl-Net-SNMP perl-Test-NoWarnings perl-XML-Writer \
-perl-Proc-PID-File perl-Compress-Raw-Bzip2 perl-libwww-perl perl-XML-Parser perl-File-Remove \
-perl-Parse-CPAN-Meta perl-Set-Scalar perl-Probe-Perl perl-File-Which perl-Package-Constants \
-perl-Module-Install perl-File-HomeDir perl-Spreadsheet-ParseExcel perl-Mail-Sendmail perl-Spreadsheet-XLSX \
-asterisk-perl perl-version perl-Crypt-DES perl-URI perl-Net-Daemon perl-IO-stringy perl-YAML-Tiny \
-perl-HTML-Tagset perl-Socket6 perl-BSD-Resource perl-PlRPC perl-IPC-Run3 perl-Text-CSV_XS perl-Unicode-Map \
-perl-Module-CoreList perl-Net-Telnet perl-PAR-Dist perl-Date-Manip perl-JSON perl-Proc-Daemon \
-perl-Spreadsheet-WriteExcel perl-rrdtool install lame screen sox ntp iftop subversion asterisk \
-asterisk-configs dahdi-tools dahdi-linux-devel php-xcache
-#my added
-yum install x11-devel
-systemctl enable httpd.service; systemctl enable mariadb.service; systemctl start httpd.service; systemctl start mariadb.service
-
-mysqlpass=$(openssl rand -hex 12)
-mysql -u root -e "SET PASSWORD FOR 'root'@'localhost' = PASSWORD('$mysqlpass');"
-echo -e "[client]\nuser=root\npass=$mysqlpass\n" > /root/my.cnf
-
-cpan install String::CRC Tk::TableMatrix Net::Address::IP::Local Term::ReadLine::Gnu Spreadsheet::Read \
-Net::Address::IPv4::Local RPM::Specfile Spreadsheet::XLSX Spreadsheet::ReadSXC <<<yes
-perl-Tk-TableMatrix
-
-wget -O /usr/local/src/asterisk-perl-0.08.tar.gz http://asterisk.gnuinter.net/files/asterisk-perl-0.08.tar.gz
-tar zxvf /usr/local/src/asterisk-perl-0.08.tar.gz
-cd /usr/local/src/asterisk-perl-0.08
-perl Makefile.PL && make all && make install
-
-/usr/local/src/
-wget http://downloads2.goautodial.org/centos/7/current/x86_64/RPMS/vicidial-2.9.441a-140612.1628.2.go.noarch.rpm
-wget http://downloads2.goautodial.org/centos/7/current/x86_64/RPMS/goautodial-ce-3.3-1406088000.noarch.rpm
-wget http://downloads2.goautodial.org/centos/7/current/x86_64/RPMS/goautodial-ce-config-3.3-1.noarch.rpm
-
-rpm -ivh --nodeps vicidial-2.9.441a-140612.1628.2.go.noarch.rpm
-rpm -ivh --nodeps goautodial-ce-3.3-1406088000.noarch.rpm
-rpm -ivh --nodeps goautodial-ce-config-3.3-1.noarch.rpm
+myip=$(dig TXT +short o-o.myaddr.l.google.com @ns1.google.com | awk -F'"' '{ print $2}')
+sed -i "s/123.234.345.456/$myip/g" /etc/rtpengine/rtpengine.conf
+sed -i "s/10.10.100.19/$myip/g" /etc/kamailio/kamailio.cfg
