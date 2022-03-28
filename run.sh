@@ -22,6 +22,7 @@ yum -y install goautodial-ce
 cd /usr/src/goautodial
 ./install.sh
 yum install -y cpan perl-Digest-MD5
+SHELL=/bin/sh
 cpan install Net::Server <<<yes
 cpan install Test::More <<<yes
 cpan install Asterisk::AGI <<<yes
