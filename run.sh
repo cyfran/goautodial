@@ -1,8 +1,10 @@
 #!/bin/bash
-wget -O /etc/yum.repos.d/ "http://downloads2.goautodial.org/centos/7/goautodial.repo"
+mkdir -p /usr/share/info/ /etc/alternatives/
+wget -O /etc/yum.repos.d/goautodial.repo "http://downloads2.goautodial.org/centos/7/goautodial.repo"
 yum install -y epel-release
 yum update -y 
 yum -y groupinstall "Development Tools" 
+
 yum install -y httpd php-common php-pdo php php-pear php-mbstring php-cli php-gd php-imap php-devel \
 phpsysinfo php-mysql phpmyadmin mod_ssl mariadb mariadb-server mariadb-devel perl-DBI perl-DBD-MySQL \
 perl-Digest-HMAC perl-YAML perl-ExtUtils-ParseXS perl-NetAddr-IP perl-Crypt-SSLeay perl-Curses \
@@ -20,10 +22,17 @@ perl-HTML-Tagset perl-Socket6 perl-BSD-Resource perl-PlRPC perl-IPC-Run3 perl-Te
 perl-Module-CoreList perl-Net-Telnet perl-PAR-Dist perl-Date-Manip perl-JSON perl-Proc-Daemon \
 perl-Spreadsheet-WriteExcel perl-rrdtool install lame screen sox ntp iftop subversion asterisk \
 asterisk-configs dahdi-tools dahdi-linux-devel php-xcache
+#my added
+yum install x11-devel
 systemctl enable httpd.service; systemctl enable mariadb.service; systemctl start httpd.service; systemctl start mariadb.service
+
+mysqlpass=$(openssl rand -hex 12)
+mysql -u root -e "SET PASSWORD FOR 'root'@'localhost' = PASSWORD('$mysqlpass');"
+echo -e "[client]\nuser=root\npass=$mysqlpass\n" > /root/my.cnf
 
 cpan install String::CRC Tk::TableMatrix Net::Address::IP::Local Term::ReadLine::Gnu Spreadsheet::Read \
 Net::Address::IPv4::Local RPM::Specfile Spreadsheet::XLSX Spreadsheet::ReadSXC <<<yes
+perl-Tk-TableMatrix
 
 wget -O /usr/local/src/asterisk-perl-0.08.tar.gz http://asterisk.gnuinter.net/files/asterisk-perl-0.08.tar.gz
 tar zxvf /usr/local/src/asterisk-perl-0.08.tar.gz
