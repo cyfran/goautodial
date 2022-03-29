@@ -13,7 +13,8 @@ perl-Crypt-Eksblowfish perl-DBI perl-DBD-mysql perl-Net-Telnet lame httpd mod_ss
 
 yum install -y epel-release
 yum install -y perl-Crypt-Eksblowfish perl-Sys-RunAlone
-echo "exclude=dahdi-tools*" >> /etc/yum.conf
+#echo "exclude=dahdi-tools*" >> /etc/yum.conf
+/etc/yum.repos.d/epel.repo
 yum update
 systemctl enable php-fpm 
 systemctl enable httpd
