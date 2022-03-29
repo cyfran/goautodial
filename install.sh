@@ -26,3 +26,5 @@ cpan install Net::Server <<<yes
 cpan install Test::More <<<yes
 cpan install Asterisk::AGI <<<yes
 
+touch /.firstboot
+
