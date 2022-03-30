@@ -80,5 +80,20 @@ chmod 755 ${ASTRECDIR}/monitorDONE
 # install listener.pl to /usr/local/bin
 cp -f ${GOSRCDIR}/${APPKONFPL} /usr/local/bin/
 
+#fix upgrade to latest version from GitHub
+cd /var/www/html
+git config --global user.email "root@localhost" 
+git stash
+git pull
+cd /var/www/html/goAPIv2
+git stash
+git pull
+wget -O "/var/www/html/php/Config.php" "https://raw.githubusercontent.com/cyfran/goautodial/main/Config.php"
+wget -O "/var/www/html/php/goCRMAPISettings.php" "https://raw.githubusercontent.com/cyfran/goautodial/main/goCRMAPISettings.php"
+sed -i "s/123.234.345.456/${IPADDRESS}/g" /var/www/html/php/goCRMAPISettings.php
+wget -O "/mysqlfix.sql" "https://raw.githubusercontent.com/cyfran/goautodial/main/mysqlfix.sql"
+mysql < /mysqlfix.sql
+rm -f /mysqlfix.sql
+
 # remove firstboot file
 rm -f /.firstboot
