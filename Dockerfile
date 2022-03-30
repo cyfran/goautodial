@@ -6,6 +6,6 @@ RUN wget https://raw.githubusercontent.com/cyfran/goautodial/main/install.sh
 RUN bash install.sh
 ADD run.sh /run.sh
 RUN chmod +x /*.sh
-ARG JELASTIC_EXPOSE=FALSE
+ENV JELASTIC_EXPOSE=FALSE
 CMD ["/run.sh"]
 
