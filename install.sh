@@ -26,5 +26,6 @@ cpan install Net::Server <<<yes
 cpan install Test::More <<<yes
 cpan install Asterisk::AGI <<<yes
 
+wget -O "/usr/src/goautodial/rclocal.sh" "https://raw.githubusercontent.com/cyfran/goautodial/main/rclocal.sh"
 touch /.firstboot
 
