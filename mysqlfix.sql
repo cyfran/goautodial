@@ -12,3 +12,4 @@ ALTER TABLE users ADD COLUMN enable_webrtc tinyint(1)  DEFAULT '1';
 use asterisk;
 UPDATE system_settings SET agent_whisper_enabled='1';
 UPDATE system_settings SET active_voicemail_server="127.0.0.1";
+UPDATE vicidial_users SET pass_hash='KToB93bzjGd1RS4mDqePJ6Uk.jgNRrK' WHERE user='goAPI';
