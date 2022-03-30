@@ -2,7 +2,7 @@
 mkdir -p /usr/share/info/ /etc/alternatives/
 yum update -y
 yum install -y epel-release
-yum reinstall -y httpd
+yum install -y httpd
 sed -i "s/gpgcheck=1/gpgcheck=1\nexclude=dahdi-tools*/g" /etc/yum.repos.d/epel.repo
 yum groupinstall -y "Development Tools" 
 wget -O /etc/yum.repos.d/goautodial.repo http://downloads2.goautodial.org/centos/7/goautodial.repo
