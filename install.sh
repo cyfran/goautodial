@@ -13,7 +13,7 @@ cd /usr/src/goautodial
 ./install.sh
 
 systemctl enable php-fpm 
-systemctl enable httpd
+#systemctl enable httpd
 systemctl enable mariadb
 systemctl enable kamailio
 systemctl enable ngcp-rtpengine
@@ -30,5 +30,6 @@ cpan install Asterisk::AGI <<<yes
 wget -O "/usr/src/goautodial/rclocal.sh" "https://raw.githubusercontent.com/cyfran/goautodial/main/rclocal.sh"
 sed -i "s/:OUTPUT DROP/:OUTPUT ACCEPT/g" /etc/sysconfig/iptables
 yum reinstall -y httpd
+systemctl enable httpd
 touch /.firstboot
 
