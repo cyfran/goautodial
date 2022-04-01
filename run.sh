@@ -1,5 +1,7 @@
 #!/bin/bash
-
+yum reinstall -y httpd
+systemctl enable httpd
+systemctl start httpd
 #cd /var/www/html
 #git config --global user.email "root@localhost" 
 #git stash
