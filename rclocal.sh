@@ -31,6 +31,7 @@ sed -i "s/123.234.345.456/${IPADDRESS}/g" ${RTPENGINEDIR}/${RTPENGINECONF}
 sed -i "s/10.10.100.19/${IPADDRESS}/g" ${KAMAILIODIR}/${KAMAILIOCONF}
 #sed -i "s/192.168.100.19/${IPALIASADDR}/g" ${KAMAILIODIR}/${KAMAILIOCONF}
 sed -i "s/vaglxc01.goautodial.com/${IPADDRESS}/g" ${WEBROOT}/php/${GOCRMCFGFILE}
+sed -i "s/table = 0/table = -1/g" ${RTPENGINEDIR}/${RTPENGINECONF}
 
 # restart RTPengine and iptables
 systemctl restart ngcp-rtpengine
